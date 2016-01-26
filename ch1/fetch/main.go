@@ -1,3 +1,4 @@
+//!-
 // Copyright © 2016 Alan A. A. Donovan & Brian W. Kernighan.
 // License: https://creativecommons.org/licenses/by-nc-sa/4.0/
 
@@ -12,10 +13,16 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strings"
 )
 
 func main() {
 	for _, url := range os.Args[1:] {
+		httpProtocol := "http://"
+		if !strings.HasPrefix(url, httpProtocol) && !strings.HasPrefix(url, "https://") {
+			url = httpProtocol + url
+		}
+
 		resp, err := http.Get(url)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "fetch: %v\n", err)
